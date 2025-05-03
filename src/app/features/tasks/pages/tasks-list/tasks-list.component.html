@@ -1,0 +1,65 @@
+<div class="p-6">
+  <h1 class="text-3xl font-bold mb-4">Gestión de Tareas</h1>
+
+  <!-- Botón para Crear Tarea -->
+  <button
+    class="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+    (click)="openModal()"
+  >
+    Crear Tarea
+  </button>
+
+  <!-- Lista de Tareas -->
+  <div class="grid gap-4">
+    <div
+      *ngFor="let task of tasks"
+      [ngClass]="{
+        'bg-gray-300': task.completed,
+        'bg-white': !task.completed
+      }"
+      class="p-4 border rounded shadow-sm flex justify-between items-center"
+    >
+      <div>
+        <h2 class="font-semibold">{{ task.title }}</h2>
+        <p class="text-gray-600">{{ task.description }}</p>
+      </div>
+
+      <div class="flex space-x-2 items-center">
+        <!-- Checkbox para marcar como completada -->
+        <label class="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            class="form-checkbox"
+            [checked]="task.completed"
+            (change)="toggleCompleted(task)"
+          />
+          <span>Completada</span>
+        </label>
+
+        <!-- Botón para Editar (oculto si está completada) -->
+        <button
+          *ngIf="!task.completed"
+          class="bg-green-500 text-white px-2 py-1 rounded"
+          (click)="openModal(task)"
+        >
+          Editar
+        </button>
+
+        <!-- Botón para Eliminar -->
+        <button
+          class="bg-red-500 text-white px-2 py-1 rounded"
+          (click)="deleteTask(task.id)"
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <app-task-modal
+    *ngIf="showModal"
+    [task]="taskToEdit"
+    (close)="closeModal()"
+  ></app-task-modal>
+</div>

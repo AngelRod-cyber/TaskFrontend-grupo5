@@ -1,0 +1,46 @@
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+>
+  <div class="bg-white p-6 rounded shadow-lg w-96">
+    <h2 class="text-xl font-bold mb-4">
+      {{ task ? 'Editar Tarea' : 'Crear Tarea' }}
+    </h2>
+    <form>
+      <div class="mb-4">
+        <label for="title" class="block font-semibold">Título</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          [(ngModel)]="title"
+          class="w-full border px-2 py-1 rounded"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="description" class="block font-semibold">Descripción</label>
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="description"
+          class="w-full border px-2 py-1 rounded"
+        ></textarea>
+      </div>
+      <div class="flex justify-end space-x-2">
+        <button
+          type="button"
+          class="bg-gray-300 px-4 py-2 rounded"
+          (click)="close.emit()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="bg-blue-500 text-white px-4 py-2 rounded"
+          (click)="saveTask()"
+        >
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
