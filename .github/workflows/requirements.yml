@@ -89,6 +89,11 @@ jobs:
         with:
           name: coverage
           path: coverage/
+      - name: Check lcov.info file
+        run: |
+          ls -lah coverage/
+          cat coverage/lcov.info | head -n 20
+
       - name: SonarCloud analysis
         run: |
           sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
@@ -118,7 +123,7 @@ jobs:
       - name: Scan Docker image with Trivy (table and HTML)
         run: |
           ./bin/trivy image --format table ${{ inputs.dockerhub-repo }}:latest || true
-              ./bin/trivy image --format template --template ./html.tpl -o trivy-report.html ${{ inputs.dockerhub-repo }}:latest
+          ./bin/trivy image --format template --template "@./html.tpl" -o trivy-report.html ${{ inputs.dockerhub-repo }}:latest
       - name: Upload Trivy HTML report
         uses: actions/upload-artifact@v4
         with:
