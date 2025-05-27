@@ -12,8 +12,14 @@ describe('TasksListComponent', () => {
   let tasksServiceSpy: jasmine.SpyObj<TasksService>;
 
   const mockTasks: Task[] = [
-    { id: 1, title: 'Task 1', description: 'Description 1', completed: false },
-    { id: 2, title: 'Task 2', description: 'Description 2', completed: true },
+    {
+      id: 1, title: 'Task 1', description: 'Description 1', completed: false,
+      userId: 0
+    },
+    {
+      id: 2, title: 'Task 2', description: 'Description 2', completed: true,
+      userId: 0
+    },
   ];
 
   beforeEach(async () => {

@@ -15,6 +15,7 @@ describe('TaskModalComponent', () => {
     title: 'Test Task',
     description: 'Test Description',
     completed: false,
+    userId: 0
   };
 
   beforeEach(async () => {
