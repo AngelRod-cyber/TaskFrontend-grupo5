@@ -89,11 +89,10 @@ jobs:
         with:
           name: coverage
           path: coverage/
-      - name: Check lcov.info file
+      - name: Move lcov.info to correct location
         run: |
-          ls -lah coverage/
-          cat coverage/lcov.info | head -n 20
-
+          mkdir -p coverage
+          mv lcov.info coverage/lcov.info
       - name: SonarCloud analysis
         run: |
           sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
