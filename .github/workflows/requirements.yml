@@ -46,8 +46,21 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: npm ci
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -fy install
       - name: Run tests
-        run: ng test --watch=false --browsers=ChromeHeadless
+        run: ng test --watch=false --browsers=ChromeHeadless --code-coverage
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
       - name: Upload dist as artifact
         uses: actions/upload-artifact@v4
         with:
@@ -67,14 +80,19 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: npm ci
-      - name: Download dist artifact
+      - name: Install SonarScanner
+        run: npm install -g sonar-scanner
+      - name: Download coverage and dist artifacts
         uses: actions/download-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+      - uses: actions/download-artifact@v4
         with:
           name: dist-folder
           path: dist/
       - name: SonarCloud analysis
         run: |
-          npm install -g sonar-scanner
           sonar-scanner \
             -Dsonar.projectKey=AngelRod-cyber_TaskFrontend-grupo5 \
             -Dsonar.organization=angelrod-cyber \
@@ -99,8 +117,13 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: npm ci
-      - name: Build Angular app
-        run: npm run build -- --configuration=production
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-folder
+          path: dist/
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
       - name: Build Docker image
